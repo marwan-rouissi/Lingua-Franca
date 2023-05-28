@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
+    <title>Lingua Franca</title>
+</head>
+    
+<body>
+    <div class="container">
+        <header>
+            <h1><span id="one">Li</span><span id="two">ng</span><span id="three">ua</span> <span id="four">Fr</span><span id="five">an</span><span id="six">ca</span></h1>
+        <img src="{{ url_for('static', filename='Logo Négatiflogo.png') }}" alt="">
+        </header>
+        <div>
+            <form method="POST" class="main">
+                <section class="langText">
+                    <div class="form-group">
+                        <select name="FromLanguage" class="langSelec">
+                        <option value="{{ curSrcLanguage }}" selected>{{ curLanguageSource }}</option>
+                        <option value="autodetect">automatic detection</option>
+                        {% for language in languages_list %}
+                            <option value="{{ language }}">{{ languages_list[language] }}</option>
+                        {% endfor %}
+                        </select>
+                    </div>
+                    <div >
+                        <textarea name="text" cols="20" rows="10" 
+                                  class="textField">{{ textToTrans }}</textarea>
+                        <button type="submit" class="btn">Translate</button>
+                    </div>
+                </section>
+
+                <section>
+                    <div class="form-group">
+                        <select name="ToLanguage" class="langSelec">
+                            <option value="{{ curDestLanguage }}" selected>{{ curLanguageTarget }}</option>
+                        {% for language in languages_list %}
+                            <option value="{{ language }}">{{ languages_list[language] }}</option>
+                        {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <textarea name="translatedText" cols="20" rows="10" value="{{ transText }}"
+                                  class="textField" readonly>{{ transText }}</textarea>
+                    </div>
+                </section>
+                
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+   <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
+   <!-- <script src='../static/script.js'></script> -->
+
+
+</body>
+
+</html>
