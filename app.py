@@ -11,6 +11,7 @@ languages = googletrans.LANGUAGES
 # save last dest language used
 lastT = []
 
+# render the created template (index.html)
 @app.route('/', methods=['GET'])
 def index():
     return render_template('index.html',
@@ -18,16 +19,11 @@ def index():
                            curLanguageSource = "select a language",
                            curLanguageTarget = "select a language")
 
-# @app.route("/image.jpg")
-# def image():
-#     return render_template("image.jpg")
-
 @app.route('/', methods=['POST'])
 def index_post():
     textToTranslate = request.form['text']
     sourceLanguage = request.form['FromLanguage']
     targetLanguage = request.form['ToLanguage']
-    lastTarget = targetLanguage
 
     try:
         if sourceLanguage == 'autodetect':
@@ -37,11 +33,10 @@ def index_post():
             sourceLanguage = request.form['FromLanguage']
             targetLanguage = request.form['ToLanguage']
         
-
+        # render template and apply modification on the targeted fields
         translatedText = translator.translate(textToTranslate, targetLanguage, sourceLanguage)
         lastT.append(targetLanguage)
-        print(lastT)
-        print(lastT[-1])
+    
         return render_template('index.html',
                             transText = translatedText.text,
                             textToTrans = textToTranslate,
@@ -51,11 +46,15 @@ def index_post():
                             curSrcLanguage = sourceLanguage,
                             )
     except ValueError:
-        if targetLanguage == "":
-            return 
+        # if no language is selected on the first traduction render the basic template
+        if targetLanguage == "" and lastT == []:
+            return render_template('index.html',
+                           languages_list = languages,
+                           curLanguageSource = "select a language",
+                           curLanguageTarget = "select a language")
+        # else, targeted language is the last one selected
         else:
             targetLanguage = lastT[-1]
-            print(lastTarget)
 
         translatedText = translator.translate(textToTranslate, targetLanguage, sourceLanguage)
         return render_template('index.html',
